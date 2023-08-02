@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "978950757607",
+    "project_id": "sipbara-603fc",
+    "storage_bucket": "sipbara-603fc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:978950757607:android:7ec34e2875c4c32ad61642",
+        "android_client_info": {
+          "package_name": "com.iqblyh.sipbara"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "978950757607-klc03cdvgq494f0bep5pghubb8cvk1ar.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnMPt3_HXZGFc6Xz__J-ponUpFlKzN_EY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "978950757607-klc03cdvgq494f0bep5pghubb8cvk1ar.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
