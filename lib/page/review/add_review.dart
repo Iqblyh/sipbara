@@ -1,19 +1,29 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
+import 'package:sipbara/controller/review_controller.dart';
+import 'package:sipbara/model/review/review.dart';
 import 'package:sipbara/style/color.dart';
 import 'package:sipbara/widget/button_widget.dart';
 
 class AddReviewWidget extends StatefulWidget {
-  const AddReviewWidget({Key? key}) : super(key: key);
+  final String idWisata;
+  const AddReviewWidget({Key? key, required this.idWisata}) : super(key: key);
 
   @override
   _AddReviewWidgetState createState() => _AddReviewWidgetState();
 }
 
 class _AddReviewWidgetState extends State<AddReviewWidget> {
-  late double _rating;
+  double _rating = 0;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final reviewController = TextEditingController();
+
+  final currentUser = FirebaseAuth.instance.currentUser!;
 
   @override
   void initState() {
@@ -81,14 +91,18 @@ class _AddReviewWidgetState extends State<AddReviewWidget> {
                     child: Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 24),
                       child: RatingBar.builder(
-                        onRatingUpdate: (newValue) =>
-                            setState(() => _rating = newValue),
+                        onRatingUpdate: (newValue) {
+                          setState(() {
+                            _rating = newValue;
+                          });
+                          print('Rating : $_rating');
+                        },
                         itemBuilder: (context, index) => Icon(
                           Icons.star_rounded,
                           color: SIPColor.tertiary,
                         ),
                         direction: Axis.horizontal,
-                        initialRating: _rating = 0,
+                        initialRating: _rating,
                         unratedColor: SIPColor.accent3,
                         itemCount: 5,
                         itemSize: 40,
@@ -98,6 +112,7 @@ class _AddReviewWidgetState extends State<AddReviewWidget> {
                   ),
                   Column(mainAxisSize: MainAxisSize.max, children: [
                     TextFormField(
+                      controller: reviewController,
                       obscureText: false,
                       decoration: InputDecoration(
                         labelStyle: const TextStyle(
@@ -158,7 +173,25 @@ class _AddReviewWidgetState extends State<AddReviewWidget> {
                   Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 12),
                       child: SIPEleButton_Large_Icon(
-                        onPressed: () {},
+                        onPressed: () {
+                          final review = Review(
+                              userUid: currentUser.uid,
+                              review: reviewController.text,
+                              rating: _rating,
+                              idWisata: widget.idWisata,
+                              isViewed: false);
+                          tambahReview(review, widget.idWisata)
+                              .whenComplete(() {
+                            QuickAlert.show(
+                                context: context,
+                                type: QuickAlertType.success,
+                                text: 'Berhasil menambahkan review!',
+                                onConfirmBtnTap: () {
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
+                                });
+                          });
+                        },
                         icon: Icons.reviews,
                         textButton: 'Tambah Review',
                         colorBg: SIPColor.primaryColor,

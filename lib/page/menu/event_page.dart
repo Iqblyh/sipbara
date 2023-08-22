@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sipbara/controller/event_controller.dart';
+import 'package:sipbara/model/event/event.dart';
 import 'package:sipbara/style/color.dart';
+import 'package:sipbara/widget/card_widget.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
 
 class EventPage extends StatefulWidget {
@@ -10,6 +13,9 @@ class EventPage extends StatefulWidget {
 }
 
 class _EventPageState extends State<EventPage> {
+  TextEditingController _searchController = TextEditingController();
+  List<Event> filteredEventList = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,6 +89,10 @@ class _EventPageState extends State<EventPage> {
                                 child: SizedBox(
                                   width: 200,
                                   child: TextFormField(
+                                    onChanged: (value) {
+                                      setState(() {});
+                                    },
+                                    controller: _searchController,
                                     obscureText: false,
                                     decoration: const InputDecoration(
                                       labelText: 'Cari event...',
@@ -142,147 +152,49 @@ class _EventPageState extends State<EventPage> {
                           Padding(
                             padding: const EdgeInsetsDirectional.fromSTEB(
                                 0, 0, 0, 44),
-                            child: ListView(
-                                padding: EdgeInsets.zero,
-                                primary: false,
-                                shrinkWrap: true,
-                                scrollDirection: Axis.vertical,
-                                children: [
-                                  Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            16, 0, 16, 0),
+                            child: StreamBuilder(
+                              stream: readEventActive(),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                } else if (snapshot.hasError) {
+                                  return const Center(
+                                    child: Text('Something went wrong!'),
+                                  );
+                                } else if (snapshot.hasData &&
+                                    snapshot.data!.isNotEmpty) {
+                                  final dataWisata = snapshot.data!;
+                                  print(dataWisata);
+                                  filteredEventList = filterEventList(
+                                      dataWisata, _searchController.text);
+
+                                  return ListView(
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    children: filteredEventList
+                                        .map(buildEvent)
+                                        .toList(),
+                                  );
+                                } else {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(16.0),
                                     child: Container(
-                                      width: 220,
-                                      height: 240,
-                                      decoration: BoxDecoration(
-                                        color: SIPColor.secondaryBackground,
-                                        boxShadow: const [
-                                          BoxShadow(
-                                            blurRadius: 4,
-                                            color: Color(0x33000000),
-                                            offset: Offset(0, 2),
-                                          )
-                                        ],
-                                        borderRadius: BorderRadius.circular(12),
-                                        border: Border.all(
-                                          color: SIPColor.alternate,
-                                          width: 1,
-                                        ),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(8, 8, 8, 8),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Expanded(
-                                              child: Stack(
-                                                children: [
-                                                  ClipRRect(
-                                                    borderRadius:
-                                                        const BorderRadius.only(
-                                                      bottomLeft:
-                                                          Radius.circular(8),
-                                                      bottomRight:
-                                                          Radius.circular(0),
-                                                      topLeft:
-                                                          Radius.circular(8),
-                                                      topRight:
-                                                          Radius.circular(8),
-                                                    ),
-                                                    child: Image.network(
-                                                      'https://images.unsplash.com/photo-1600357169193-19bd51d2a6ec?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGJlYWNoaG91c2V8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=900&q=60',
-                                                      width: double.infinity,
-                                                      height: double.infinity,
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
-                                                  Align(
-                                                    alignment:
-                                                        const AlignmentDirectional(
-                                                            1, 1),
-                                                    child: Container(
-                                                      width: 90,
-                                                      height: 90,
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        color: SIPColor
-                                                            .secondaryBackground,
-                                                        borderRadius:
-                                                            BorderRadius.only(
-                                                          bottomLeft:
-                                                              Radius.circular(
-                                                                  0),
-                                                          bottomRight:
-                                                              Radius.circular(
-                                                                  0),
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  20),
-                                                          topRight:
-                                                              Radius.circular(
-                                                                  0),
-                                                        ),
-                                                      ),
-                                                      child: const Column(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Text(
-                                                            '32',
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              fontFamily:
-                                                                  'Outfit',
-                                                              fontSize: 32,
-                                                              color: SIPColor
-                                                                  .primaryText,
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            'September',
-                                                            style: TextStyle(
-                                                              fontSize: 14,
-                                                              fontFamily:
-                                                                  'Outfit',
-                                                              color: SIPColor
-                                                                  .primaryText,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            const Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(0, 8, 0, 0),
-                                              child: Text(
-                                                'Pesta Rakyat',
-                                                style: TextStyle(
-                                                  fontFamily: 'Outfit',
-                                                  color: SIPColor.primaryText,
-                                                  fontSize: 24,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ]),
+                                        child: Text('Tidak Ada Event Aktif')),
+                                  );
+                                }
+                              },
+                            ),
+                            // ListView(
+                            //     padding: EdgeInsets.zero,
+                            //     primary: false,
+                            //     shrinkWrap: true,
+                            //     scrollDirection: Axis.vertical,
+                            //     children: []
+                            // ),
                           ),
                         ],
                       ),
@@ -296,4 +208,23 @@ class _EventPageState extends State<EventPage> {
       ),
     );
   }
+}
+
+Widget buildEvent(Event event) => CardEventMain(
+      event: event,
+    );
+
+List<Event> filterEventList(List<Event> data, String query) {
+  if (query.isEmpty) {
+    return data;
+  }
+
+  final lowercaseQuery = query.toLowerCase();
+
+  return data.where((event) {
+    final namaEvent = event.nama_event.toLowerCase();
+    final deskripsi = event.deskripsi_event.toLowerCase();
+    return namaEvent.contains(lowercaseQuery) ||
+        deskripsi.contains(lowercaseQuery);
+  }).toList();
 }

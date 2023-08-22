@@ -30,45 +30,49 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 color: SIPColor.primaryText, fontFamily: 'Lexend Deca'),
           ),
         ),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(44, 120, 44, 0),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                const Text(
-                  'Dapatkan email untuk\n mengatur ulang sandi kamu!',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: 'Lexend Deca',
-                    color: SIPColor.primaryText,
-                    fontSize: 24,
+        body: SingleChildScrollView(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsetsDirectional.fromSTEB(44, 120, 44, 0),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  const Text(
+                    'Dapatkan email untuk\n mengatur ulang sandi kamu!',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'Lexend Deca',
+                      color: SIPColor.primaryText,
+                      fontSize: 24,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextFormField(
-                  controller: emailController,
-                  cursorColor: SIPColor.primaryText,
-                  decoration: const InputDecoration(
-                    floatingLabelStyle: TextStyle(color: SIPColor.primaryText),
-                    focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: SIPColor.primaryText)),
-                    labelText: 'Alamat Email',
+                  const SizedBox(
+                    height: 20,
                   ),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: emailValidator,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                SIPEleButton(
-                  onPressed: () => resetPassword(context, emailController.text),
-                  textButton: 'Atur Ulang Sandi',
-                  colorBg: SIPColor.secondaryColor,
-                )
-              ],
+                  TextFormField(
+                    controller: emailController,
+                    cursorColor: SIPColor.primaryText,
+                    decoration: const InputDecoration(
+                      floatingLabelStyle:
+                          TextStyle(color: SIPColor.primaryText),
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: SIPColor.primaryText)),
+                      labelText: 'Alamat Email',
+                    ),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: emailValidator,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  SIPEleButton(
+                    onPressed: () =>
+                        resetPassword(context, emailController.text),
+                    textButton: 'Atur Ulang Sandi',
+                    colorBg: SIPColor.secondaryColor,
+                  )
+                ],
+              ),
             ),
           ),
         ),

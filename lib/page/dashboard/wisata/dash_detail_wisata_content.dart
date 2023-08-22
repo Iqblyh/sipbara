@@ -225,13 +225,12 @@ class _WisataDetailAdminWidgetState extends State<WisataDetailAdminWidget> {
                                                       title: 'Peringatan',
                                                       text:
                                                           'Anda yakin ingin menghapus gambar',
-                                                      confirmBtnText: 'Ya',
+                                                      confirmBtnText: 'Tidak',
                                                       confirmBtnColor:
                                                           SIPColor.error,
-                                                      cancelBtnText: 'Tidak',
+                                                      cancelBtnText: 'Ya',
                                                       showCancelBtn: true,
-                                                      onConfirmBtnTap:
-                                                          () async {
+                                                      onCancelBtnTap: () async {
                                                         DocumentReference
                                                             docRef =
                                                             FirebaseFirestore
@@ -276,6 +275,8 @@ class _WisataDetailAdminWidgetState extends State<WisataDetailAdminWidget> {
                                                           context: context,
                                                           type: QuickAlertType
                                                               .success,
+                                                          confirmBtnColor:
+                                                              SIPColor.success,
                                                           text:
                                                               'Gambar berhasil dihapus',
                                                         );
@@ -501,7 +502,7 @@ class _WisataDetailAdminWidgetState extends State<WisataDetailAdminWidget> {
                                             children: [
                                               Expanded(
                                                 child: Text(
-                                                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                                                  'Mantap, Tempatnya bersih',
                                                   style: TextStyle(
                                                     color:
                                                         SIPColor.secondaryText,

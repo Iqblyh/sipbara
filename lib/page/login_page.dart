@@ -34,207 +34,217 @@ class _LoginPageState extends State<LoginPage> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        body: Container(
-          width: MediaQuery.sizeOf(context).width,
-          height: MediaQuery.sizeOf(context).height * 1,
-          decoration: BoxDecoration(
-            color: Color(0xFF14181B),
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: Image.asset('assets/images/candi1.png').image,
-            ),
-          ),
+        body: SingleChildScrollView(
           child: Container(
-            width: 100,
-            height: 100,
+            width: MediaQuery.sizeOf(context).width,
+            height: MediaQuery.sizeOf(context).height * 1,
             decoration: BoxDecoration(
-              color: Color(0x990F1113),
+              color: Color(0xFF14181B),
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: Image.asset('assets/images/candi1.png').image,
+              ),
             ),
-            child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0, 70, 0, 0),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 20),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/images/logo1.png',
-                          width: 160,
-                          height: 105,
-                          fit: BoxFit.contain,
-                        ),
-                      ],
+            child: Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                color: Color(0x990F1113),
+              ),
+              child: Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(0, 70, 0, 0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 20),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/logo1.png',
+                            width: 160,
+                            height: 105,
+                            fit: BoxFit.contain,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-                      child: DefaultTabController(
-                        length: 2,
-                        initialIndex: 0,
-                        child: Column(
-                          children: [
-                            Align(
-                              alignment: Alignment(0, 0),
-                              child: TabBar(
-                                isScrollable: true,
-                                labelColor: SIPColor.secondaryColor,
-                                unselectedLabelColor: SIPColor.infoColor,
-                                labelStyle: TextStyle(
-                                  fontFamily: 'Readex Pro',
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                                indicatorColor: SIPColor.secondaryColor,
-                                tabs: [
-                                  Tab(
-                                    text: 'Sign In',
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                        child: DefaultTabController(
+                          length: 2,
+                          initialIndex: 0,
+                          child: Column(
+                            children: [
+                              Align(
+                                alignment: Alignment(0, 0),
+                                child: TabBar(
+                                  isScrollable: true,
+                                  labelColor: SIPColor.secondaryColor,
+                                  unselectedLabelColor: SIPColor.infoColor,
+                                  labelStyle: TextStyle(
+                                    fontFamily: 'Readex Pro',
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700,
                                   ),
-                                  Tab(
-                                    text: 'Sign Up',
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              child: TabBarView(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        44, 0, 44, 0),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 20, 0, 0),
-                                          child: SIPTextInput(
-                                            controller: emailController,
-                                            label: 'Alamat Email',
-                                          ),
-                                        ), //teksinput email
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 20, 0, 0),
-                                          child: SIPTextInput(
-                                            controller: _passwordController,
-                                            label: 'Sandi',
-                                          ),
-                                        ), //teksinput pass
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 20, 0, 0),
-                                          child: SIPEleButton(
-                                              textButton: 'Masuk',
-                                              colorBg: SIPColor.primaryColor,
-                                              onPressed: () => signIn(
-                                                  context,
-                                                  emailController.text,
-                                                  _passwordController.text)),
-                                        ), //button masuk
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 20, 0, 0),
-                                          child: TextButton(
-                                            onPressed: () =>
-                                                Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ForgotPasswordPage(),
-                                              ),
-                                            ),
-                                            child: Text(
-                                              'Lupa Sandi ?',
-                                              style: TextStyle(
-                                                color: SIPColor.infoColor,
-                                                fontFamily: 'Readex Pro',
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                  indicatorColor: SIPColor.secondaryColor,
+                                  tabs: [
+                                    Tab(
+                                      text: 'Sign In',
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        44, 0, 44, 0),
-                                    child: SingleChildScrollView(
-                                      child: Form(
-                                        key: formKey,
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(0, 20, 0, 0),
-                                              child: SIPTextInput(
-                                                label: 'Alamat Email',
-                                                controller: emailController,
-                                                validator: emailValidator,
-                                              ),
+                                    Tab(
+                                      text: 'Sign Up',
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: TabBarView(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          44, 0, 44, 0),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0, 20, 0, 0),
+                                            child: SIPTextInput(
+                                              controller: emailController,
+                                              label: 'Alamat Email',
+                                              passVisible: false,
                                             ),
-                                            Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(0, 20, 0, 0),
-                                              child: SIPTextInput(
-                                                label: 'Sandi',
-                                                controller: _passwordController,
-                                                validator: passValidator,
-                                              ),
+                                          ), //teksinput email
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0, 20, 0, 0),
+                                            child: SIPTextInput(
+                                              controller: _passwordController,
+                                              label: 'Sandi',
+                                              passVisible: true,
                                             ),
-                                            Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(0, 20, 0, 0),
-                                              child: SIPTextInput(
-                                                label: 'Konfirmasi Sandi',
-                                                controller:
-                                                    confirmPasswordController,
-                                                validator: (value) => value !=
-                                                            null &&
-                                                        value !=
-                                                            _passwordController
-                                                                .text
-                                                    ? 'Sandi tidak sama'
-                                                    : null,
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(0, 20, 0, 0),
-                                              child: SIPEleButton(
-                                                onPressed: () => signUp(
+                                          ), //teksinput pass
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0, 20, 0, 0),
+                                            child: SIPEleButton(
+                                                textButton: 'Masuk',
+                                                colorBg:
+                                                    SIPColor.secondaryColor,
+                                                onPressed: () => signIn(
                                                     context,
                                                     emailController.text,
-                                                    _passwordController.text,
-                                                    formKey),
-                                                textButton: 'Daftar',
-                                                colorBg: SIPColor.primaryColor,
+                                                    _passwordController.text)),
+                                          ), //button masuk
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    0, 20, 0, 0),
+                                            child: TextButton(
+                                              onPressed: () =>
+                                                  Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ForgotPasswordPage(),
+                                                ),
                                               ),
-                                            )
-                                          ],
-                                        ),
+                                              child: Text(
+                                                'Lupa Sandi ?',
+                                                style: TextStyle(
+                                                  color: SIPColor.infoColor,
+                                                  fontFamily: 'Readex Pro',
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  )
-                                ],
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          44, 0, 44, 0),
+                                      child: SingleChildScrollView(
+                                        child: Form(
+                                          key: formKey,
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(0, 20, 0, 0),
+                                                child: SIPTextInput(
+                                                  label: 'Alamat Email',
+                                                  controller: emailController,
+                                                  validator: emailValidator,
+                                                  passVisible: false,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(0, 20, 0, 0),
+                                                child: SIPTextInput(
+                                                  label: 'Sandi',
+                                                  controller:
+                                                      _passwordController,
+                                                  validator: passValidator,
+                                                  passVisible: true,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(0, 20, 0, 0),
+                                                child: SIPTextInput(
+                                                  label: 'Konfirmasi Sandi',
+                                                  controller:
+                                                      confirmPasswordController,
+                                                  validator: (value) => value !=
+                                                              null &&
+                                                          value !=
+                                                              _passwordController
+                                                                  .text
+                                                      ? 'Sandi tidak sama'
+                                                      : null,
+                                                  passVisible: true,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(0, 20, 0, 0),
+                                                child: SIPEleButton(
+                                                  onPressed: () => signUp(
+                                                      context,
+                                                      emailController.text,
+                                                      _passwordController.text,
+                                                      formKey),
+                                                  textButton: 'Daftar',
+                                                  colorBg:
+                                                      SIPColor.secondaryColor,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

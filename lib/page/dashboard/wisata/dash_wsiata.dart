@@ -14,6 +14,8 @@ class DashWisataWidget extends StatefulWidget {
 
 class _DashWisataWidgetState extends State<DashWisataWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  TextEditingController _searchController = TextEditingController();
+  List<Wisata> filteredWisataList = [];
 
   @override
   void initState() {
@@ -22,6 +24,7 @@ class _DashWisataWidgetState extends State<DashWisataWidget> {
 
   @override
   void dispose() {
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -75,9 +78,13 @@ class _DashWisataWidgetState extends State<DashWisataWidget> {
                 Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(8, 0, 8, 8),
                   child: TextFormField(
+                    controller: _searchController,
                     obscureText: false,
+                    onChanged: (value) {
+                      setState(() {});
+                    },
                     decoration: InputDecoration(
-                      labelText: 'Label here...',
+                      labelText: 'Cari data wisata...',
                       labelStyle: const TextStyle(
                         fontFamily: 'Readex Pro',
                         fontSize: 14,
@@ -126,27 +133,31 @@ class _DashWisataWidgetState extends State<DashWisataWidget> {
                 ),
                 Expanded(
                   child: Container(
-                      height: size.height,
-                      child: StreamBuilder(
-                        stream: readWisata(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasError) {
-                            return const Center(
-                              child: Text('Something went wrong!'),
-                            );
-                          } else if (snapshot.hasData) {
-                            final dataWisata = snapshot.data!;
+                    height: size.height,
+                    child: StreamBuilder(
+                      stream: readWisata(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return const Center(
+                            child: Text('Something went wrong!'),
+                          );
+                        } else if (snapshot.hasData) {
+                          final dataWisata = snapshot.data!;
+                          filteredWisataList = filterWisataList(
+                              dataWisata, _searchController.text);
 
-                            return ListView(
-                              children: dataWisata.map(buildWisata).toList(),
-                            );
-                          } else {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                        },
-                      )),
+                          return ListView(
+                            children:
+                                filteredWisataList.map(buildWisata).toList(),
+                          );
+                        } else {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                      },
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -163,4 +174,19 @@ class _DashWisataWidgetState extends State<DashWisataWidget> {
         idWisata: wisata.id,
         wisata: wisata,
       );
+
+  List<Wisata> filterWisataList(List<Wisata> data, String query) {
+    if (query.isEmpty) {
+      return data;
+    }
+
+    final lowercaseQuery = query.toLowerCase();
+
+    return data.where((wisata) {
+      final namaWisata = wisata.nama_wisata.toLowerCase();
+      final deskripsi = wisata.deskripsi_wisata.toLowerCase();
+      return namaWisata.contains(lowercaseQuery) ||
+          deskripsi.contains(lowercaseQuery);
+    }).toList();
+  }
 }

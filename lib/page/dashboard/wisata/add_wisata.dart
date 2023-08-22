@@ -2,8 +2,11 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:map_location_picker/map_location_picker.dart';
 import 'package:sipbara/controller/storage_service.dart';
 import 'package:sipbara/controller/wisata/wisata_controller.dart';
+import 'package:sipbara/helper/api_key.dart';
+import 'package:sipbara/model/review/review.dart';
 import 'package:sipbara/style/color.dart';
 import 'package:sipbara/widget/button_widget.dart';
 
@@ -19,6 +22,10 @@ class AddWisataWidget extends StatefulWidget {
 class _AddWisataWidgetState extends State<AddWisataWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool isLoading = false;
+  String address = "null";
+  String autocompletePlace = "null";
+  late LatLng pickedLocation = const LatLng(0, 0);
+  late LatLng _initialPosition = const LatLng(28.8993468, 76.6250249);
 
   PlatformFile? pickedFile;
 
@@ -55,7 +62,7 @@ class _AddWisataWidgetState extends State<AddWisataWidget> {
           backgroundColor: SIPColor.secondaryBackground,
           iconTheme: IconThemeData(color: SIPColor.primaryText),
           title: const Text(
-            'Hello World',
+            'Tambah Wisata',
             style: TextStyle(
               fontSize: 22,
               color: SIPColor.primaryText,
@@ -292,7 +299,7 @@ class _AddWisataWidgetState extends State<AddWisataWidget> {
                       mainAxisSize: MainAxisSize.max,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Padding(
+                        Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
@@ -309,7 +316,7 @@ class _AddWisataWidgetState extends State<AddWisataWidget> {
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(8, 0, 0, 0),
                                 child: Text(
-                                  'lang, lat',
+                                  '${pickedLocation.latitude}, ${pickedLocation.longitude}',
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: SIPColor.secondaryText,
@@ -320,43 +327,88 @@ class _AddWisataWidgetState extends State<AddWisataWidget> {
                             ],
                           ),
                         ),
-                        Container(
-                          width: double.infinity,
-                          constraints: BoxConstraints(
-                            maxWidth: 500,
-                          ),
-                          decoration: BoxDecoration(
-                            color: SIPColor.secondaryBackground,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: SIPColor.alternate,
-                              width: 2,
+                        GestureDetector(
+                          onTap: () async {
+                            await curretnLatLng().then((value) {
+                              setState(() {
+                                _initialPosition = value;
+                              });
+                              print(_initialPosition);
+                            }).then((value) => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return MapLocationPicker(
+                                        hideMoreOptions: true,
+                                        hideLocationButton: false,
+                                        apiKey: google_maps_api_key,
+                                        popOnNextButtonTaped: true,
+                                        currentLatLng: _initialPosition,
+                                        onNext: (GeocodingResult? result) {
+                                          if (result != null) {
+                                            setState(() {
+                                              address =
+                                                  result.formattedAddress ?? "";
+                                              pickedLocation = LatLng(
+                                                  result.geometry.location.lat,
+                                                  result.geometry.location.lng);
+                                            });
+                                          }
+                                        },
+                                        onSuggestionSelected:
+                                            (PlacesDetailsResponse? result) {
+                                          if (result != null) {
+                                            setState(() {
+                                              autocompletePlace = result.result
+                                                      .formattedAddress ??
+                                                  "";
+                                            });
+                                          }
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ));
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            constraints: BoxConstraints(
+                              maxWidth: 500,
                             ),
-                          ),
-                          child: const Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Icon(
-                                  Icons.add_location_rounded,
-                                  color: SIPColor.primaryColor,
-                                  size: 32,
-                                ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      16, 0, 0, 0),
-                                  child: Text(
-                                    'Pilih Lokasi',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: SIPColor.primaryText,
-                                      fontFamily: 'Readex Pro',
+                            decoration: BoxDecoration(
+                              color: SIPColor.secondaryBackground,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: SIPColor.alternate,
+                                width: 2,
+                              ),
+                            ),
+                            child: const Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Icon(
+                                    Icons.add_location_rounded,
+                                    color: SIPColor.primaryColor,
+                                    size: 32,
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        16, 0, 0, 0),
+                                    child: Text(
+                                      'Pilih Lokasi',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: SIPColor.primaryText,
+                                        fontFamily: 'Readex Pro',
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         )
@@ -399,12 +451,16 @@ class _AddWisataWidgetState extends State<AddWisataWidget> {
                                   nama_wisata: controllerNamaWisata.text,
                                   deskripsi_wisata: controllerDeskripsi.text,
                                   thumbnail_image: imageUrl,
-                                  long: '-7.3962902',
-                                  lat: '109.2009313',
+                                  lat: pickedLocation.latitude.toString(),
+                                  long: pickedLocation.longitude.toString(),
                                   images: [],
                                 );
 
-                                await tambahWisata(wisata);
+                                final reviews = Reviews(
+                                  reviews: [],
+                                );
+
+                                await tambahWisata(wisata, reviews);
 
                                 print(imageUrl);
 
@@ -418,5 +474,13 @@ class _AddWisataWidgetState extends State<AddWisataWidget> {
         ),
       ),
     );
+  }
+
+  Future<LatLng> curretnLatLng() async {
+    await Geolocator.requestPermission();
+    Position position = await Geolocator.getCurrentPosition();
+    LatLng latLng = LatLng(position.latitude, position.longitude);
+
+    return latLng;
   }
 }

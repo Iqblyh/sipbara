@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
+import 'package:sipbara/controller/event_controller.dart';
+import 'package:sipbara/controller/penginapan_controller.dart';
 import 'package:sipbara/controller/wisata/wisata_controller.dart';
 
 class Storage {
@@ -85,5 +87,51 @@ class Storage {
           .ref(value.items.first.fullPath)
           .delete();
     });
+  }
+
+  Future uploadMediaEvent(
+      List<File> _image, String subPath, String idEvent) async {
+    print(_image);
+    var date = DateTime.now();
+    int index = 0;
+    String addName =
+        '${date.year}${date.month}${date.day}${date.minute}${date.second}';
+    for (var gambar in _image) {
+      index += 1;
+      String imageName = '${subPath}_$index$addName';
+      print('HAHAHAHAHAHHA : $index');
+      reference = firebase_storage.FirebaseStorage.instance
+          .ref()
+          .child('images/$subPath/$imageName');
+
+      await reference.putFile(gambar).whenComplete(() async {
+        await reference.getDownloadURL().then((value) {
+          tambahMediaEvent(imageName, value, idEvent);
+        });
+      });
+    }
+  }
+
+  Future uploadMediaPenginapan(
+      List<File> _image, String subPath, String idPenginapan) async {
+    print(_image);
+    var date = DateTime.now();
+    int index = 0;
+    String addName =
+        '${date.year}${date.month}${date.day}${date.minute}${date.second}';
+    for (var gambar in _image) {
+      index += 1;
+      String imageName = '${subPath}_$index$addName';
+      print('HAHAHAHAHAHHA : $index');
+      reference = firebase_storage.FirebaseStorage.instance
+          .ref()
+          .child('images/$subPath/$imageName');
+
+      await reference.putFile(gambar).whenComplete(() async {
+        await reference.getDownloadURL().then((value) {
+          tambahMediaPenginapan(imageName, value, idPenginapan);
+        });
+      });
+    }
   }
 }

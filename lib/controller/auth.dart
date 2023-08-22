@@ -84,3 +84,28 @@ Future resetPassword(BuildContext context, String email) async {
     Navigator.of(context).pop();
   }
 }
+
+Future<bool> isFieldEmpty() async {
+  final currentUser = FirebaseAuth.instance.currentUser!;
+  try {
+    final profileSnapshot = await FirebaseFirestore.instance
+        .collection('user')
+        .doc(currentUser.uid)
+        .get();
+
+    if (profileSnapshot.exists) {
+      if (profileSnapshot.data()!.containsKey('name')) {
+        final fieldValue = profileSnapshot.data()!['name'];
+
+        return fieldValue == null || fieldValue.toString().isEmpty;
+      } else {
+        return true;
+      }
+    } else {
+      return true;
+    }
+  } catch (e) {
+    print('Error checking field in user profile: $e');
+    return false;
+  }
+}

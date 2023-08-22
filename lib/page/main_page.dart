@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sipbara/page/dashboard/profile_page_admin.dart';
+import 'package:sipbara/page/menu/profile/add_profile.dart';
 import 'package:sipbara/page/menu/event_page.dart';
 import 'package:sipbara/page/menu/other_page.dart';
-import 'package:sipbara/page/menu/profile_page.dart';
-import 'package:sipbara/page/menu/home/wisata_page.dart';
+import 'package:sipbara/page/menu/profile/profile_page.dart';
+import 'package:sipbara/page/menu/wisata/wisata_page.dart';
 import 'package:sipbara/style/color.dart';
 import 'package:sipbara/controller/auth.dart';
 
@@ -109,13 +110,33 @@ class CekAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: isAdmin(),
-        builder: (context, snapshot) => snapshot.hasData
-            ? snapshot.data != false
-                ? ProfilePageAdmin()
-                : ProfilePage()
-            : Center(
-                child: CircularProgressIndicator(),
-              ));
+      future: isAdmin(),
+      builder: (context, snapshot) => snapshot.hasData
+          ? snapshot.data != false
+              ? ProfilePageAdmin()
+              : CekProfil()
+          // : ProfilePage()
+          : Center(
+              child: CircularProgressIndicator(),
+            ),
+    );
+  }
+}
+
+class CekProfil extends StatelessWidget {
+  const CekProfil({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: isFieldEmpty(),
+      builder: (context, snapshot) => snapshot.hasData
+          ? snapshot.data != false
+              ? ProfilecreateWidget()
+              : ProfilePage()
+          : Center(
+              child: CircularProgressIndicator(),
+            ),
+    );
   }
 }

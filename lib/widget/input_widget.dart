@@ -7,12 +7,14 @@ class SIPTextInput extends StatefulWidget {
   final String label;
   final TextEditingController controller;
   final String? Function(String?)? validator;
+  final bool passVisible;
 
   SIPTextInput(
       {super.key,
       required this.label,
       required this.controller,
-      this.validator});
+      this.validator,
+      required this.passVisible});
 
   @override
   State<SIPTextInput> createState() => _SIPTextInputState();
@@ -23,7 +25,7 @@ class _SIPTextInputState extends State<SIPTextInput> {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: widget.controller,
-      obscureText: false,
+      obscureText: widget.passVisible,
       decoration: InputDecoration(
         labelText: widget.label,
         labelStyle: TextStyle(
@@ -75,7 +77,6 @@ class _SIPTextInputState extends State<SIPTextInput> {
         fontFamily: 'Readex Pro',
         color: Color(0xFF0F1113),
       ),
-      maxLines: null,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: widget.validator,
     );

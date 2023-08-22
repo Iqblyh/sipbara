@@ -22,7 +22,7 @@ class Wisata {
     required this.lat,
     required this.long,
     this.images,
-  });
+  }) : namaWisataLowercase = nama_wisata.toLowerCase();
 
   Map<String, dynamic> toJson() => {
         'idWisata': id,
@@ -51,4 +51,6 @@ class Wisata {
         lat: json['lat'],
         long: json['long'],
       );
+
+  final String namaWisataLowercase;
 }

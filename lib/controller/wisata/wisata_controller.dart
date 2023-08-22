@@ -3,14 +3,18 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:sipbara/controller/storage_service.dart';
 
+import '../../model/review/review.dart';
 import '../../model/wisata/wisata.dart';
 
-Future tambahWisata(Wisata wisata) async {
+Future tambahWisata(Wisata wisata, Reviews reviews) async {
   final docWisata = FirebaseFirestore.instance.collection('wisata').doc();
+  final docReview = FirebaseFirestore.instance.collection('review');
 
   wisata.id = docWisata.id;
   final json = wisata.toJson();
-  await docWisata.set(json);
+  await docWisata.set(json).then((value) async {
+    await docReview.doc(docWisata.id).set(reviews.toJson());
+  });
 }
 
 Future tambahMedia(String imageName, String imageUrl, String idWisata) async {
@@ -28,11 +32,37 @@ Future tambahMedia(String imageName, String imageUrl, String idWisata) async {
   });
 }
 
+// Stream<List<Wisata>> readWisata({String? searchQuery}) {
+//   // Get the base query for the 'wisata' collection
+//   Query baseQuery = FirebaseFirestore.instance.collection('wisata');
+//
+//   // Apply the search filter if the searchQuery is not null or empty
+//   if (searchQuery != null && searchQuery.isNotEmpty) {
+//     baseQuery = baseQuery
+//         .where('namaWisata', isGreaterThanOrEqualTo: searchQuery)
+//         .where('namaWisata', isLessThan: searchQuery + 'z')
+//   }
+//
+//   // Return the stream
+//   return baseQuery.snapshots().map((snapshot) => snapshot.docs
+//       .map((doc) => Wisata.fromJson(doc.data() as Map<String, dynamic>))
+//       .toList());
+// }
+
 Stream<List<Wisata>> readWisata() => FirebaseFirestore.instance
     .collection('wisata')
     .snapshots()
     .map((snapshot) =>
         snapshot.docs.map((doc) => Wisata.fromJson(doc.data())).toList());
+//
+// Stream<QuerySnapshot<Map<String, dynamic>>> searchStream(String searchQuery) {
+//   return FirebaseFirestore.instance
+//       .collection(
+//           'wisata') // Replace 'your_collection' with your Firestore collection name
+//       .where('namaWisata', isGreaterThanOrEqualTo: searchQuery)
+//       .where('namaWisata', isLessThan: searchQuery + 'z')
+//       .snapshots();
+// }
 
 Future<DocumentSnapshot<Map<String, dynamic>>> readDetailWisata(
         String idWisata) =>
