@@ -84,7 +84,7 @@ class _EditKulinerWidgetState extends State<EditKulinerWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Edit Data Penginapan',
+                    'Edit Data',
                     style: TextStyle(
                       fontFamily: 'Outfit',
                       color: SIPColor.primaryText,
@@ -94,7 +94,7 @@ class _EditKulinerWidgetState extends State<EditKulinerWidget> {
                   const Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                     child: Text(
-                      'Isi form dibawah untuk mengedit penginapan',
+                      'Isi form dibawah untuk mengedit data',
                       style: TextStyle(
                         fontSize: 16,
                         fontFamily: 'Readex Pro',
@@ -110,7 +110,7 @@ class _EditKulinerWidgetState extends State<EditKulinerWidget> {
                       controller: controllerNamaKuliner,
                       obscureText: false,
                       decoration: InputDecoration(
-                        label: const Text('Nama Penginapan'),
+                        label: const Text('Nama Kuliner / Oleh2'),
                         labelStyle: const TextStyle(
                           fontFamily: 'Outfit',
                           color: SIPColor.secondaryText,
@@ -172,7 +172,7 @@ class _EditKulinerWidgetState extends State<EditKulinerWidget> {
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
                         ),
-                        hintText: 'Deskripsi Penginapan...',
+                        hintText: 'Deskripsi Kuliner / Oleh2...',
                         hintStyle: const TextStyle(
                           fontSize: 14,
                           fontFamily: 'Readex Pro',
